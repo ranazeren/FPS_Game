@@ -1,0 +1,29 @@
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from PIL import Image
+
+# GIF'i aç
+gif_path = "zeren_heart.gif"
+gif = Image.open(gif_path)
+
+frames = []
+try:
+    while True:
+        frames.append(gif.copy())
+        gif.seek(len(frames))  # sonraki frame'e git
+except EOFError:
+    pass
+
+fig, ax = plt.subplots()
+im = plt.imshow(frames[0])
+
+def update(frame):
+    im.set_array(frame)
+    return [im]
+
+ani = animation.FuncAnimation(
+    fig, update, frames=frames, interval=100, blit=True, repeat=True
+)
+
+plt.axis("off")
+plt.show()
